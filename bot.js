@@ -27,7 +27,16 @@ client.on("guildDelete", guild => {
 client.on("guildMemberAdd", (u) => {
     let channel = u.guild.channels.find("name", logChannel)
     
-    if (!channel) return console.log(`Channel ${logChannel} cannot be found.`);
+    if (!channel) {
+    // Create a new text channel
+    guild.createChannel(logChannel, 'text')
+  .then(channel => 
+        channel.send(`Created new channel, ${channel}`);
+        channel.send(`:tada: Welcome ${u.user.username} (${u.user}) to **${guild.name}**!`);
+        return;
+       )
+  .catch(console.error);
+}
 
     channel.send(`:tada: Welcome ${u.user.username} (${u.user}) to **${guild.name}**!`);
 });
